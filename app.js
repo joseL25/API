@@ -3,6 +3,7 @@ import { writeFileSync, readFile, readFileSync } from 'fs';
 import path,{ join } from 'path';
 import {fileURLToPath} from 'url';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 // guardando la funcion express en una variable app para manipularlo 
 const app = express();
@@ -16,6 +17,8 @@ const __dirname = path.dirname(__filename);
 // ruta de la base de datos .json
 const filePath = join(process.cwd(), '/database/users.json');
 
+dotenv.config();
+
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -26,6 +29,10 @@ userRouter.use((req, res, next) => {
     console.log(`📦 Middleware → ${req.method} ${req.url}`);
     next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
 });
+
+// Aqui comienzan las Validaciones - Auth
+
+// Aqui terminan las Validaciones - Auth
 
 // Aqui comienza las rutas del API
 userRouter.get('/',(re,res)=>{
@@ -58,11 +65,15 @@ userRouter.get('/users/:id',(req,res)=>{
 })
 
 userRouter.post('/login',(req,res)=>{
+    const SECRET_KEY = process.env.CLAVE_TOKEN;
     let email = req.body.email;
     let password = req.body.password;
     let lectura = readFileSync(filePath,'utf8');
     let data = JSON.parse(lectura);
-    let buscador = data.filter(u=>u.email == email);
+    let buscador = data.find(u=>u.email == email);
+
+    // Generar token
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 });
 
 // ruta para crear un usuario
