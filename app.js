@@ -1,43 +1,35 @@
 import express from 'express';
 import { writeFileSync, readFile, readFileSync } from 'fs';
-import { join } from 'path';
+import path,{ join } from 'path';
+import {fileURLToPath} from 'url';
+import jwt from 'jsonwebtoken';
 
+// guardando la funcion express en una variable app para manipularlo 
 const app = express();
+// usando el Router de express para crear subrutas
 const userRouter = express.Router();
-app.use(express.json());
+// Convierte la URL del archivo en un path usable
+const __filename = fileURLToPath(import.meta.url);
+// Obtiene la carpeta del archivo actual
+const __dirname = path.dirname(__filename);          
 
-// const users = [
-//     { id: 1, name: 'Ana', },
-//     { id: 2, name: 'Luis', },
-//     { id: 3, name: 'Carla', },
-//   ];
-
+// ruta de la base de datos .json
 const filePath = join(process.cwd(), '/database/users.json');
+
+app.use(express.json());
+app.use(express.static('public'));
+
+
 // console.log('Ruta del archivo:', filePath);
 
-// writeFileSync(filePath, JSON.stringify(users,null,2))
-// let lectura = readFile(filePath,'utf-8',(err,data)=>{
-    // if(err){
-        // console.log(`error presentado: ${err}`);
-        // return;
-    // }
-    // const jsonobjeto = JSON.parse(data);
-    // return data;
-    // console.log(data)
-// })
-
-// userRouter.use((req, res, next) => {
-//   console.log(`📦 Middleware → ${req.method} ${req.url}`);
-//   next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
-// });
-app.use((req, res, next) => {
+userRouter.use((req, res, next) => {
     console.log(`📦 Middleware → ${req.method} ${req.url}`);
-  next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
+    next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
 });
 
 // Aqui comienza las rutas del API
 userRouter.get('/',(re,res)=>{
-    res.send('Bienvenido a la vista del Home')
+    res.send('vista del home')
 })
 
 userRouter.get('/users',(req,res)=>{
@@ -51,7 +43,7 @@ userRouter.get('/users',(req,res)=>{
     }
 })
 
-// ruta para 
+// ruta API para cada usuario en el que el id de la ruta 
 userRouter.get('/users/:id',(req,res)=>{
     let id = req.params.id;
     let lectura = readFileSync(filePath,'utf8')
@@ -65,6 +57,13 @@ userRouter.get('/users/:id',(req,res)=>{
     }
 })
 
+userRouter.post('/login',(req,res)=>{
+    let email = req.body.email;
+    let password = req.body.password;
+    let lectura = readFileSync(filePath,'utf8');
+    let data = JSON.parse(lectura);
+    let buscador = data.filter(u=>u.email == email);
+});
 
 // ruta para crear un usuario
 userRouter.post('/users/create',(req,res)=>{
@@ -95,10 +94,11 @@ userRouter.delete('/users/delete/:id',(req,res)=>{
 })
 // Aqui termina las rutas del API
 
+
 app.use('/', userRouter);
 
 // 8️⃣ Iniciamos el servidor
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor Express corriendo en http://localhost:${PORT}`);
+    console.log(`✅ Servidor Express corriendo en http://localhost:${PORT}`);
 });
