@@ -1,17 +1,20 @@
 [
   {
     "id": 1,
-    "name": "Ana",
-    "email": "ana@gmail.com"
+    "name": "Juan Perez",
+    "email": "juan@example.com",
+    "password": "$2b$10$/qYbxXPbY/xtY1.gfIe4guCrY/JU64FupWRObHalNhhmDNochagIa"
+  },
+  {
+    "id": 2,
+    "name": "pablo",
+    "email": "pablo@example.com",
+    "password": "$2b$05$63nF94prgldqVf/gqnj2DOclSDy8vomU5QSxL4QCiwgqkkFsfVfSW"
   },
   {
     "id": 3,
-    "name": "Carla",
-    "email": "carla@gmail.com"
-  },
-  {
-    "id": 4,
-    "name": "Juan Perez",
-    "email": "juan@example.com"
+    "name": "homero",
+    "email": "jay@example.com",
+    "password": "$2b$05$VKLN69PmQJduVVNc8/anH.5xP7h35vTDFrkzmzkis.OugZdBxVPXu"
   }
 ]
