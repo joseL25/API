@@ -2,8 +2,7 @@ const { writeFileSync,readFileSync } = require('fs');
 const { join } = require('path');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {} = require('../middlewares/auth.js')
-require('dotenv').config;
+require('dotenv').config();
 
 // ruta de la base de datos users.json
 const filePath = join(process.cwd(), './database/users.json');
@@ -13,19 +12,19 @@ module.exports = {
         try {
             let lectura = readFileSync(filePath,'utf8');
             let data = JSON.parse(lectura);
-            // console.log('lectura: ',data);
+            data = data.map(({password,...rest})=> rest);
             res.json(data);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     },
     detail:(req,res)=>{
         let id = req.params.id;
-        let lectura = readFileSync(filePath,'utf8')
-        let data = JSON.parse(lectura)
-        let usuario = data.find(u=>u.id==id)
+        let lectura = readFileSync(filePath,'utf8');
+        let data = JSON.parse(lectura);
+        let usuario = data.find(u=>u.id==id);
         if(!usuario){
-            return res.status(404).json({mensaje:'usuario no encontrado'})
+            return res.status(404).json({mensaje:'usuario no encontrado'});
         }else{
             console.log('lectura: ',usuario);
             res.json(usuario);
@@ -40,20 +39,26 @@ module.exports = {
             let data = JSON.parse(lectura);
             let usuario = data.find(u=>u.email == email);
             if(!usuario){
-                return res.status(404).json({mensaje:'este correo no esta registrado'})
+                return res.status(404).json({mensaje:'este correo no esta registrado'});
             }
-            const passValidation = await bcryptjs.compare(password,usuario.password)
+            const passValidation = await bcryptjs.compare(password,usuario.password);
+            if(!passValidation){return res.status(404).json({mensaje:'contraseña incorrecta'})};
             if(usuario.email == email && passValidation){
-                let payload ={name:usuario.name,email: usuario.email}
+                let payload ={id:usuario.id,name:usuario.name,email: usuario.email}
                 const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" }); // Generar token
-                res.json({mensaje:'sesion iniciada correctamente', user: usuario, key: token})
+                res.cookie('token', token, {
+                httpOnly: true,       // solo accesible desde el servidor
+                secure: false,        // true si usas HTTPS
+                maxAge: 1000 * 60 * 60 * 24}); // duracion de un día
+                res.json({mensaje:'sesion iniciada correctamente', user: usuario, key: token});
             }
         } catch (error) {
             console.log(error);
-        }
+        };
     },
     logout:(req,res)=>{
-        res.json({mensaje:'sesion cerrada correctamente'})
+        res.clearCookie('token');
+        res.json({mensaje:'sesion cerrada'});
     },
     upload:(req,res)=>{
         let lectura = readFileSync(filePath,'utf8');

@@ -4,10 +4,14 @@ const app = express();
 const indexRouter = require('./routes/index.API.routes.js');
 const userRouter = require('./routes/users.API.routes.js');
 const productRouter = require('./routes/products.API.routes.js');
+var cookieParser = require('cookie-parser')
+
 require('dotenv').config();
 
 app.use(express.json());
 app.use(express.static('public'));
+
+app.use(cookieParser());
 
 app.use((req, res, next) => {
     console.log(`📦 Middleware → ${req.method} ${req.url}`);
