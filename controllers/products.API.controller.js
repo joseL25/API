@@ -9,7 +9,7 @@ module.exports = {
         try {
             let lectura = readFileSync(filePath2,'utf8');
             let data = JSON.parse(lectura);
-            console.log('lectura: ',data);
+            // console.log('lectura: ',data);
             res.json(data);
         } catch (error) {
             console.log(error)

@@ -2,7 +2,7 @@ const { writeFileSync,readFileSync } = require('fs');
 const { join } = require('path');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {} = require('../middlewares/userLogged.js')
+const {} = require('../middlewares/auth.js')
 require('dotenv').config;
 
 // ruta de la base de datos users.json
@@ -32,20 +32,24 @@ module.exports = {
         }
     },
     login:async(req,res)=>{
-        const SECRET_KEY = process.env.CLAVE_TOKEN;
-        let {email,password} = req.body;
-        // let password = req.body.password;
-        let lectura = readFileSync(filePath,'utf8');
-        let data = JSON.parse(lectura);
-        let usuario = data.find(u=>u.email == email);
-        let passValidation = await bcryptjs.compare(password,usuario.password)
-        if(!usuario){
-            return res.status(404).json({mensaje:'este correo no esta registrado'})
-        }
-        if(usuario.email == email && passValidation){
-            let payload ={name:usuario.name,email: usuario.email}
-            const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" }); // Generar token
-            res.json({mensaje:'sesion iniciada correctamente', user: usuario, key: token})
+        try {
+            const SECRET_KEY = process.env.CLAVE_TOKEN;
+            let {email,password} = req.body;
+            // let password = req.body.password;
+            let lectura = readFileSync(filePath,'utf8');
+            let data = JSON.parse(lectura);
+            let usuario = data.find(u=>u.email == email);
+            if(!usuario){
+                return res.status(404).json({mensaje:'este correo no esta registrado'})
+            }
+            const passValidation = await bcryptjs.compare(password,usuario.password)
+            if(usuario.email == email && passValidation){
+                let payload ={name:usuario.name,email: usuario.email}
+                const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" }); // Generar token
+                res.json({mensaje:'sesion iniciada correctamente', user: usuario, key: token})
+            }
+        } catch (error) {
+            console.log(error);
         }
     },
     logout:(req,res)=>{

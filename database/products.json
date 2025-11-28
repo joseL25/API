@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "zapatillas",
+    "description": "zapatilla nike",
+    "price": "57000",
+    "stock": "2"
+  },
+  {
+    "id": 2,
+    "name": "remera",
+    "description": "remera basica",
+    "price": "17000",
+    "stock": "5"
+  }
+]
