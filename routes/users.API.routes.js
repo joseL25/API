@@ -8,10 +8,11 @@ const {allUsers,
     logout,
     upload,
     update,
-    remove} = require('../controllers/users.API.controller.js');
+    remove,
+    register} = require('../controllers/users.API.controller.js');
 
 // ruta API para que devuelva todos los usuarios
-userRouter.get('/', allUsers);
+userRouter.get('/',authLogged,allUsers);
 
 // ruta API para cada usuario en el que el id de la ruta 
 userRouter.get('/user-detail/:id',authLogged,detail);
@@ -22,11 +23,14 @@ userRouter.post('/login', login);
 // ruta API para cerrar sesion
 userRouter.post('/logout',authLogged, logout);
 
-// ruta API para crear un usuario
-userRouter.post('/create',upload);
+// ruta API para crear un usuario desde el admin
+userRouter.post('/create',authLogged,upload);
+
+// ruta API para que el cliente se registre
+userRouter.post('/register', register);
 
 // ruta API para editar un usuario
-userRouter.put('/edit/:id',update);
+userRouter.put('/edit/:id',authLogged,update);
 
 // ruta para eliminar el usuario
 userRouter.delete('/delete/:id',authLogged, remove);

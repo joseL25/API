@@ -3,18 +3,28 @@
     "id": 1,
     "name": "Juan Perez",
     "email": "juan@example.com",
-    "password": "$2b$10$/qYbxXPbY/xtY1.gfIe4guCrY/JU64FupWRObHalNhhmDNochagIa"
+    "password": "$2b$10$/qYbxXPbY/xtY1.gfIe4guCrY/JU64FupWRObHalNhhmDNochagIa",
+    "rol":"customer"
   },
   {
     "id": 2,
     "name": "pablo",
     "email": "pablo@example.com",
-    "password": "$2b$05$63nF94prgldqVf/gqnj2DOclSDy8vomU5QSxL4QCiwgqkkFsfVfSW"
+    "password": "$2b$05$63nF94prgldqVf/gqnj2DOclSDy8vomU5QSxL4QCiwgqkkFsfVfSW",
+    "role":"admin"
   },
   {
     "id": 3,
     "name": "homero",
     "email": "jay@example.com",
-    "password": "$2b$05$VKLN69PmQJduVVNc8/anH.5xP7h35vTDFrkzmzkis.OugZdBxVPXu"
+    "password": "$2b$05$VKLN69PmQJduVVNc8/anH.5xP7h35vTDFrkzmzkis.OugZdBxVPXu",
+    "role":"customer"
+  },
+  {
+    "id": 4,
+    "name": "abc",
+    "email": "abc@example.com",
+    "password": "$2b$05$0X4HLeMnwiJQdO3su2X/IOz9dC96F2eN2FBqIpNRbwfVdr7KEWe8e",
+    "role":"customer"
   }
 ]

@@ -35,8 +35,10 @@ module.exports = {
             name: name,
             description: description,
             price: price,
-            stock: stock
-        }
+            stock: stock,
+            seller: req.user.name,
+            seller_email: req.user.email
+        };
         data.push(newProduct);
         writeFileSync(filePath2,JSON.stringify(data,null,2));
         res.json({mensaje:'producto creado exitosamente', product: newProduct});

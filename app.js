@@ -1,10 +1,10 @@
 // import jwt from 'jsonwebtoken';
 const express = require('express');
 const app = express();
-const indexRouter = require('./routes/index.API.routes.js');
+
 const userRouter = require('./routes/users.API.routes.js');
 const productRouter = require('./routes/products.API.routes.js');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
@@ -18,7 +18,10 @@ app.use((req, res, next) => {
     next(); // ¡Importante! next() continúa hacia la siguiente función o ruta.
 });
 
-app.use('/', indexRouter); // aqui se abre las subrutas del home
+app.get('/',(req,res)=>{
+    res.send('vista del Home');
+})
+
 app.use('/api/users', userRouter); // aqui se abre las subrutas de los usuarios
 app.use('/api/products', productRouter); // aqui se abre las subrutas de los productos
 
