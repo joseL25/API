@@ -2,14 +2,13 @@ const { writeFileSync,readFileSync } = require('fs');
 const { join } = require('path');
 
 // rutas de la base de datos products.json
-const filePath2 = join(process.cwd(),'./database/products.json');
+const filePath2 = join(process.cwd(),'./db/products.json');
 
 module.exports = {
     allProd:(req,res)=>{
         try {
             let lectura = readFileSync(filePath2,'utf8');
             let data = JSON.parse(lectura);
-            // console.log('lectura: ',data);
             res.json(data);
         } catch (error) {
             console.log(error)

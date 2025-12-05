@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 // ruta de la base de datos users.json
-const filePath = join(process.cwd(), './database/users.json');
+const filePath = join(process.cwd(), './db/users.json');
 
 module.exports = {
     allUsers:(req,res)=>{// 
@@ -56,7 +56,7 @@ module.exports = {
                 secure: false,        // true si usas HTTPS
                 maxAge: 1000 * 60 * 60 * 24}); // duracion de un día
                 res.json({mensaje:'sesion iniciada correctamente', user: usuarioSpass, key: token});
-            }
+            };
         } catch (error) {
             console.log(error);
         };
